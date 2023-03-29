@@ -1,5 +1,8 @@
 [package]
 name = "openapiv3-visit"
+description = "visitor for the openapiv3 crate"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/aatifsyed/openapiv3-visit"
 version = "0.1.0"
 edition = "2021"
 
