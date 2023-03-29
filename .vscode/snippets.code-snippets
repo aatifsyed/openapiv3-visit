@@ -1,0 +1,61 @@
+{
+	// Place your openapiv3-visit workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"trait fn": {
+		"prefix": "fn visit",
+		"body": [
+			"fn visit_$1_mut(&mut self, node: &'openapi $2) {",
+			"visit_$1_mut(self, node)",
+			"}"
+		]
+	},
+	"top level fn": {
+		"prefix": "pub fn visit",
+		"body": [
+			"pub fn visit_$1_mut<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi mut $2)",
+			"where",
+			"VisitorT: VisitMut<'openapi> + ?Sized,",
+			"{",
+			"${0:let (_, _) = (visitor, node);}",
+			"}"
+		]
+	},
+	"visit opt": {
+		"prefix": "if let Some",
+		"body": [
+			"if let Some(node) = $1.as_mut() {",
+			"visit_$2_mut(visitor, node);",
+			"}"
+		]
+	},
+	"visit iter": {
+		"prefix": "for node in",
+		"body": [
+			"for node in $1 {",
+			"visit_$2_mut(visitor, node);",
+			"}"
+		]
+	},
+	"visit item": {
+		"prefix": "if let Item",
+		"body": [
+			"if let Item(node) = $1 {",
+			"visit_$2_mut(visitor, node);",
+			"}"
+		]
+	}
+}
