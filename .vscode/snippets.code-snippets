@@ -50,6 +50,14 @@
 			"}"
 		]
 	},
+	"visit iter2": {
+		"prefix": "for (_, node) in",
+		"body": [
+			"for (_, node) in $1 {",
+			"visit_$2_mut(visitor, node);",
+			"}"
+		]
+	},
 	"visit item": {
 		"prefix": "if let Item",
 		"body": [

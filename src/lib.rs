@@ -1,10 +1,12 @@
 use openapiv3::{
-    AdditionalProperties, AnySchema, ArrayType, Contact, CookieStyle, Discriminator, Encoding,
-    Example, ExternalDocumentation, Header, HeaderStyle, Info, IntegerFormat, IntegerType, License,
-    MediaType, NumberFormat, NumberType, ObjectType, OpenAPI, Operation, Parameter, ParameterData,
+    APIKeyLocation, AdditionalProperties, AnySchema, ArrayType, Callback, Components, Contact,
+    CookieStyle, Discriminator, Encoding, Example, ExternalDocumentation, Header, HeaderStyle,
+    Info, IntegerFormat, IntegerType, License, Link, LinkOperation, MediaType, NumberFormat,
+    NumberType, OAuth2Flow, OAuth2Flows, ObjectType, OpenAPI, Operation, Parameter, ParameterData,
     ParameterSchemaOrContent, PathItem, PathStyle, Paths, QueryStyle, ReferenceOr,
-    ReferenceOr::Item, RequestBody, Schema, SchemaData, SchemaKind, Server, ServerVariable,
-    StringFormat, StringType, Type, VariantOrUnknownOrEmpty,
+    ReferenceOr::Item, RequestBody, Response, Responses, Schema, SchemaData, SchemaKind,
+    SecurityScheme, Server, ServerVariable, StringFormat, StringType, Tag, Type,
+    VariantOrUnknownOrEmpty,
 };
 
 pub trait VisitMut<'openapi> {}
@@ -19,15 +21,190 @@ where
         servers,
         paths,
         components,
-        security,
+        security: _,
         tags,
         external_docs,
-        extensions,
+        extensions: _,
     } = node;
     visit_info_mut(visitor, info);
     for node in servers {
         visit_server_mut(visitor, node);
     }
+    visit_paths_mut(visitor, paths);
+    if let Some(node) = components.as_mut() {
+        visit_components_mut(visitor, node);
+    }
+    for node in tags {
+        visit_tag_mut(visitor, node);
+    }
+    if let Some(node) = external_docs.as_mut() {
+        visit_external_documentation_mut(visitor, node);
+    }
+}
+
+pub fn visit_tag_mut<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi mut Tag)
+where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let Tag {
+        name: _,
+        description: _,
+        external_docs,
+        extensions: _,
+    } = node;
+    if let Some(node) = external_docs.as_mut() {
+        visit_external_documentation_mut(visitor, node);
+    }
+}
+
+pub fn visit_components_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut Components,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let Components {
+        security_schemes,
+        responses,
+        parameters,
+        examples,
+        request_bodies,
+        headers,
+        schemas,
+        links,
+        callbacks,
+        extensions: _,
+    } = node;
+    for (_, node) in security_schemes {
+        visit_reference_or_security_scheme_mut(visitor, node);
+    }
+    for (_, node) in responses {
+        visit_reference_or_response_mut(visitor, node);
+    }
+    for (_, node) in parameters {
+        visit_reference_or_parameter_mut(visitor, node);
+    }
+    for (_, node) in examples {
+        visit_reference_or_example_mut(visitor, node);
+    }
+    for (_, node) in request_bodies {
+        visit_reference_or_request_body_mut(visitor, node);
+    }
+    for (_, node) in headers {
+        visit_reference_or_header_mut(visitor, node);
+    }
+    for (_, node) in schemas {
+        visit_reference_or_schema_mut(visitor, node);
+    }
+    for (_, node) in links {
+        visit_reference_or_link_mut(visitor, node);
+    }
+    for (_, node) in callbacks {
+        visit_reference_or_callback_mut(visitor, node);
+    }
+}
+
+pub fn visit_reference_or_callback_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut ReferenceOr<Callback>,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    if let Item(node) = node {
+        visit_callback_mut(visitor, node);
+    }
+}
+
+pub fn visit_callback_mut<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi mut Callback)
+where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    for (_, node) in node {
+        visit_path_item_mut(visitor, node);
+    }
+}
+
+pub fn visit_reference_or_security_scheme_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut ReferenceOr<SecurityScheme>,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    if let Item(node) = node {
+        visit_security_scheme_mut(visitor, node);
+    }
+}
+
+pub fn visit_security_scheme_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut SecurityScheme,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    match node {
+        SecurityScheme::APIKey {
+            location,
+            name: _,
+            description: _,
+        } => visit_api_key_location_mut(visitor, location),
+        SecurityScheme::HTTP {
+            scheme: _,
+            bearer_format: _,
+            description: _,
+        } => (),
+        SecurityScheme::OAuth2 {
+            flows,
+            description: _,
+        } => visit_oauth2_flows_mut(visitor, flows),
+        SecurityScheme::OpenIDConnect {
+            open_id_connect_url: _,
+            description: _,
+        } => (),
+    }
+}
+
+pub fn visit_oauth2_flows_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut OAuth2Flows,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let OAuth2Flows {
+        implicit,
+        password,
+        client_credentials,
+        authorization_code,
+    } = node;
+    if let Some(node) = implicit.as_mut() {
+        visit_oauth2_flow_mut(visitor, node);
+    }
+    if let Some(node) = password.as_mut() {
+        visit_oauth2_flow_mut(visitor, node);
+    }
+    if let Some(node) = client_credentials.as_mut() {
+        visit_oauth2_flow_mut(visitor, node);
+    }
+    if let Some(node) = authorization_code.as_mut() {
+        visit_oauth2_flow_mut(visitor, node);
+    }
+}
+
+pub fn visit_oauth2_flow_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut OAuth2Flow,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let (_, _) = (visitor, node);
+}
+
+pub fn visit_api_key_location_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut APIKeyLocation,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let (_, _) = (visitor, node);
 }
 
 pub fn visit_paths_mut<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi mut Paths)
@@ -73,6 +250,36 @@ where
         parameters,
         extensions: _,
     } = node;
+    if let Some(node) = get.as_mut() {
+        visit_operation_mut(visitor, node);
+    }
+    if let Some(node) = put.as_mut() {
+        visit_operation_mut(visitor, node);
+    }
+    if let Some(node) = post.as_mut() {
+        visit_operation_mut(visitor, node);
+    }
+    if let Some(node) = delete.as_mut() {
+        visit_operation_mut(visitor, node);
+    }
+    if let Some(node) = options.as_mut() {
+        visit_operation_mut(visitor, node);
+    }
+    if let Some(node) = head.as_mut() {
+        visit_operation_mut(visitor, node);
+    }
+    if let Some(node) = patch.as_mut() {
+        visit_operation_mut(visitor, node);
+    }
+    if let Some(node) = trace.as_mut() {
+        visit_operation_mut(visitor, node);
+    }
+    for node in servers {
+        visit_server_mut(visitor, node);
+    }
+    for node in parameters {
+        visit_reference_or_parameter_mut(visitor, node);
+    }
 }
 
 pub fn visit_operation_mut<'openapi, VisitorT>(
@@ -104,6 +311,99 @@ pub fn visit_operation_mut<'openapi, VisitorT>(
     if let Some(node) = request_body.as_mut() {
         visit_reference_or_request_body_mut(visitor, node);
     }
+    visit_responses_mut(visitor, responses);
+    for node in servers {
+        visit_server_mut(visitor, node);
+    }
+}
+
+pub fn visit_responses_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut Responses,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let Responses {
+        default,
+        responses,
+        extensions: _,
+    } = node;
+    if let Some(node) = default.as_mut() {
+        visit_reference_or_response_mut(visitor, node);
+    }
+    for (_, node) in responses {
+        visit_reference_or_response_mut(visitor, node)
+    }
+}
+
+pub fn visit_reference_or_response_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut ReferenceOr<Response>,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    if let Item(node) = node {
+        visit_response_mut(visitor, node);
+    }
+}
+pub fn visit_response_mut<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi mut Response)
+where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let Response {
+        description: _,
+        headers,
+        content,
+        links,
+        extensions: _,
+    } = node;
+    for (_, node) in headers {
+        visit_reference_or_header_mut(visitor, node);
+    }
+    for (_, node) in content {
+        visit_media_type_mut(visitor, node);
+    }
+    for (_, node) in links {
+        visit_reference_or_link_mut(visitor, node);
+    }
+}
+
+pub fn visit_reference_or_link_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut ReferenceOr<Link>,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    if let Item(node) = node {
+        visit_link_mut(visitor, node);
+    }
+}
+
+pub fn visit_link_mut<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi mut Link)
+where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let Link {
+        description: _,
+        operation,
+        request_body: _,
+        parameters: _,
+        server,
+        extensions: _,
+    } = node;
+    visit_link_operation_mut(visitor, operation);
+    if let Some(node) = server.as_mut() {
+        visit_server_mut(visitor, node);
+    }
+}
+
+pub fn visit_link_operation_mut<'openapi, VisitorT>(
+    visitor: &mut VisitorT,
+    node: &'openapi mut LinkOperation,
+) where
+    VisitorT: VisitMut<'openapi> + ?Sized,
+{
+    let (_, _) = (visitor, node);
 }
 
 pub fn visit_reference_or_request_body_mut<'openapi, VisitorT>(
