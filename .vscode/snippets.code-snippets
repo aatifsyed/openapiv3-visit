@@ -18,7 +18,7 @@
 	"trait fn": {
 		"prefix": "fn visit",
 		"body": [
-			"fn visit_$1_mut(&mut self, node: &'openapi $2) {",
+			"fn visit_$1_mut(&mut self, node: &'openapi mut $2) {",
 			"visit_$1_mut(self, node)",
 			"}"
 		]

@@ -9,7 +9,212 @@ use openapiv3::{
     VariantOrUnknownOrEmpty,
 };
 
-pub trait VisitMut<'openapi> {}
+pub trait VisitMut<'openapi> {
+    fn visit_openapi_mut(&mut self, node: &'openapi mut OpenAPI) {
+        visit_openapi_mut(self, node)
+    }
+    fn visit_tag_mut(&mut self, node: &'openapi mut Tag) {
+        visit_tag_mut(self, node)
+    }
+    fn visit_components_mut(&mut self, node: &'openapi mut Components) {
+        visit_components_mut(self, node)
+    }
+    fn visit_reference_or_callback_mut(&mut self, node: &'openapi mut ReferenceOr<Callback>) {
+        visit_reference_or_callback_mut(self, node)
+    }
+    fn visit_callback_mut(&mut self, node: &'openapi mut Callback) {
+        visit_callback_mut(self, node)
+    }
+    fn visit_reference_or_security_scheme_mut(
+        &mut self,
+        node: &'openapi mut ReferenceOr<SecurityScheme>,
+    ) {
+        visit_reference_or_security_scheme_mut(self, node)
+    }
+    fn visit_security_scheme_mut(&mut self, node: &'openapi mut SecurityScheme) {
+        visit_security_scheme_mut(self, node)
+    }
+    fn visit_oauth2_flows_mut(&mut self, node: &'openapi mut OAuth2Flows) {
+        visit_oauth2_flows_mut(self, node)
+    }
+    fn visit_oauth2_flow_mut(&mut self, node: &'openapi mut OAuth2Flow) {
+        visit_oauth2_flow_mut(self, node)
+    }
+    fn visit_api_key_location_mut(&mut self, node: &'openapi mut APIKeyLocation) {
+        visit_api_key_location_mut(self, node)
+    }
+    fn visit_paths_mut(&mut self, node: &'openapi mut Paths) {
+        visit_paths_mut(self, node)
+    }
+    fn visit_reference_or_path_item_mut(&mut self, node: &'openapi mut ReferenceOr<PathItem>) {
+        visit_reference_or_path_item_mut(self, node)
+    }
+    fn visit_path_item_mut(&mut self, node: &'openapi mut PathItem) {
+        visit_path_item_mut(self, node)
+    }
+    fn visit_operation_mut(&mut self, node: &'openapi mut Operation) {
+        visit_operation_mut(self, node)
+    }
+    fn visit_responses_mut(&mut self, node: &'openapi mut Responses) {
+        visit_responses_mut(self, node)
+    }
+    fn visit_reference_or_response_mut(&mut self, node: &'openapi mut ReferenceOr<Response>) {
+        visit_reference_or_response_mut(self, node)
+    }
+    fn visit_response_mut(&mut self, node: &'openapi mut Response) {
+        visit_response_mut(self, node)
+    }
+    fn visit_reference_or_link_mut(&mut self, node: &'openapi mut ReferenceOr<Link>) {
+        visit_reference_or_link_mut(self, node)
+    }
+    fn visit_link_mut(&mut self, node: &'openapi mut Link) {
+        visit_link_mut(self, node)
+    }
+    fn visit_link_operation_mut(&mut self, node: &'openapi mut LinkOperation) {
+        visit_link_operation_mut(self, node)
+    }
+    fn visit_reference_or_request_body_mut(
+        &mut self,
+        node: &'openapi mut ReferenceOr<RequestBody>,
+    ) {
+        visit_reference_or_request_body_mut(self, node)
+    }
+    fn visit_request_body_mut(&mut self, node: &'openapi mut RequestBody) {
+        visit_request_body_mut(self, node)
+    }
+    fn visit_reference_or_parameter_mut(&mut self, node: &'openapi mut ReferenceOr<Parameter>) {
+        visit_reference_or_parameter_mut(self, node)
+    }
+    fn visit_parameter_mut(&mut self, node: &'openapi mut Parameter) {
+        visit_parameter_mut(self, node)
+    }
+    fn visit_cookie_style_mut(&mut self, node: &'openapi mut CookieStyle) {
+        visit_cookie_style_mut(self, node)
+    }
+    fn visit_path_style_mut(&mut self, node: &'openapi mut PathStyle) {
+        visit_path_style_mut(self, node)
+    }
+    fn visit_parameter_data_mut(&mut self, node: &'openapi mut ParameterData) {
+        visit_parameter_data_mut(self, node)
+    }
+    fn visit_parameter_schema_or_content_mut(
+        &mut self,
+        node: &'openapi mut ParameterSchemaOrContent,
+    ) {
+        visit_parameter_schema_or_content_mut(self, node)
+    }
+    fn visit_media_type_mut(&mut self, node: &'openapi mut MediaType) {
+        visit_media_type_mut(self, node)
+    }
+    fn visit_encoding_mut(&mut self, node: &'openapi mut Encoding) {
+        visit_encoding_mut(self, node)
+    }
+    fn visit_query_style_mut(&mut self, node: &'openapi mut QueryStyle) {
+        visit_query_style_mut(self, node)
+    }
+    fn visit_reference_or_header_mut(&mut self, node: &'openapi mut ReferenceOr<Header>) {
+        visit_reference_or_header_mut(self, node)
+    }
+    fn visit_header_mut(&mut self, node: &'openapi mut Header) {
+        visit_header_mut(self, node)
+    }
+    fn visit_header_style_mut(&mut self, node: &'openapi mut HeaderStyle) {
+        visit_header_style_mut(self, node)
+    }
+    fn visit_reference_or_example_mut(&mut self, node: &'openapi mut ReferenceOr<Example>) {
+        visit_reference_or_example_mut(self, node)
+    }
+    fn visit_example_mut(&mut self, node: &'openapi mut Example) {
+        visit_example_mut(self, node)
+    }
+    fn visit_reference_or_schema_mut(&mut self, node: &'openapi mut ReferenceOr<Schema>) {
+        visit_reference_or_schema_mut(self, node)
+    }
+    fn visit_schema_mut(&mut self, node: &'openapi mut Schema) {
+        visit_schema_mut(self, node)
+    }
+    fn visit_schema_data_mut(&mut self, node: &'openapi mut SchemaData) {
+        visit_schema_data_mut(self, node)
+    }
+    fn visit_discriminator_mut(&mut self, node: &'openapi mut Discriminator) {
+        visit_discriminator_mut(self, node)
+    }
+    fn visit_schema_kind_mut(&mut self, node: &'openapi mut SchemaKind) {
+        visit_schema_kind_mut(self, node)
+    }
+    fn visit_any_schema_mut(&mut self, node: &'openapi mut AnySchema) {
+        visit_any_schema_mut(self, node)
+    }
+    fn visit_type_mut(&mut self, node: &'openapi mut Type) {
+        visit_type_mut(self, node)
+    }
+    fn visit_array_type_mut(&mut self, node: &'openapi mut ArrayType) {
+        visit_array_type_mut(self, node)
+    }
+    fn visit_object_type_mut(&mut self, node: &'openapi mut ObjectType) {
+        visit_object_type_mut(self, node)
+    }
+    fn visit_reference_or_box_schema_mut(&mut self, node: &'openapi mut ReferenceOr<Box<Schema>>) {
+        visit_reference_or_box_schema_mut(self, node)
+    }
+    fn visit_additional_properties_mut(&mut self, node: &'openapi mut AdditionalProperties) {
+        visit_additional_properties_mut(self, node)
+    }
+    fn visit_integer_type_mut(&mut self, node: &'openapi mut IntegerType) {
+        visit_integer_type_mut(self, node)
+    }
+    fn visit_variant_or_unknown_or_empty_integer_format_mut(
+        &mut self,
+        node: &'openapi mut VariantOrUnknownOrEmpty<IntegerFormat>,
+    ) {
+        visit_variant_or_unknown_or_empty_integer_format_mut(self, node)
+    }
+    fn visit_integer_format_mut(&mut self, node: &'openapi mut IntegerFormat) {
+        visit_integer_format_mut(self, node)
+    }
+    fn visit_number_type_mut(&mut self, node: &'openapi mut NumberType) {
+        visit_number_type_mut(self, node)
+    }
+    fn visit_variant_or_unknown_or_empty_number_format_mut(
+        &mut self,
+        node: &'openapi mut VariantOrUnknownOrEmpty<NumberFormat>,
+    ) {
+        visit_variant_or_unknown_or_empty_number_format_mut(self, node)
+    }
+    fn visit_number_format_mut(&mut self, node: &'openapi mut NumberFormat) {
+        visit_number_format_mut(self, node)
+    }
+    fn visit_string_type_mut(&mut self, node: &'openapi mut StringType) {
+        visit_string_type_mut(self, node)
+    }
+    fn visit_variant_or_unknown_or_empty_string_format_mut(
+        &mut self,
+        node: &'openapi mut VariantOrUnknownOrEmpty<StringFormat>,
+    ) {
+        visit_variant_or_unknown_or_empty_string_format_mut(self, node)
+    }
+    fn visit_string_format_mut(&mut self, node: &'openapi mut StringFormat) {
+        visit_string_format_mut(self, node)
+    }
+    fn visit_external_documentation_mut(&mut self, node: &'openapi mut ExternalDocumentation) {
+        visit_external_documentation_mut(self, node)
+    }
+    fn visit_server_mut(&mut self, node: &'openapi mut Server) {
+        visit_server_mut(self, node)
+    }
+    fn visit_server_variable_mut(&mut self, node: &'openapi mut ServerVariable) {
+        visit_server_variable_mut(self, node)
+    }
+    fn visit_info_mut(&mut self, node: &'openapi mut Info) {
+        visit_info_mut(self, node)
+    }
+    fn visit_contact_mut(&mut self, node: &'openapi mut Contact) {
+        visit_contact_mut(self, node)
+    }
+    fn visit_license_mut(&mut self, node: &'openapi mut License) {
+        visit_license_mut(self, node)
+    }
+}
 
 pub fn visit_openapi_mut<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi mut OpenAPI)
 where
