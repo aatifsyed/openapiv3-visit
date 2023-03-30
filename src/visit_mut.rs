@@ -231,19 +231,19 @@ where
         external_docs,
         extensions: _,
     } = node;
-    visit_info_mut(visitor, info);
+    visitor.visit_info_mut(info);
     for node in servers {
-        visit_server_mut(visitor, node);
+        visitor.visit_server_mut(node);
     }
-    visit_paths_mut(visitor, paths);
+    visitor.visit_paths_mut(paths);
     if let Some(node) = components.as_mut() {
-        visit_components_mut(visitor, node);
+        visitor.visit_components_mut(node);
     }
     for node in tags {
-        visit_tag_mut(visitor, node);
+        visitor.visit_tag_mut(node);
     }
     if let Some(node) = external_docs.as_mut() {
-        visit_external_documentation_mut(visitor, node);
+        visitor.visit_external_documentation_mut(node);
     }
 }
 
@@ -258,7 +258,7 @@ where
         extensions: _,
     } = node;
     if let Some(node) = external_docs.as_mut() {
-        visit_external_documentation_mut(visitor, node);
+        visitor.visit_external_documentation_mut(node);
     }
 }
 
@@ -281,31 +281,31 @@ pub fn visit_components_mut<'openapi, VisitorT>(
         extensions: _,
     } = node;
     for (_, node) in security_schemes {
-        visit_reference_or_security_scheme_mut(visitor, node);
+        visitor.visit_reference_or_security_scheme_mut(node);
     }
     for (_, node) in responses {
-        visit_reference_or_response_mut(visitor, node);
+        visitor.visit_reference_or_response_mut(node);
     }
     for (_, node) in parameters {
-        visit_reference_or_parameter_mut(visitor, node);
+        visitor.visit_reference_or_parameter_mut(node);
     }
     for (_, node) in examples {
-        visit_reference_or_example_mut(visitor, node);
+        visitor.visit_reference_or_example_mut(node);
     }
     for (_, node) in request_bodies {
-        visit_reference_or_request_body_mut(visitor, node);
+        visitor.visit_reference_or_request_body_mut(node);
     }
     for (_, node) in headers {
-        visit_reference_or_header_mut(visitor, node);
+        visitor.visit_reference_or_header_mut(node);
     }
     for (_, node) in schemas {
-        visit_reference_or_schema_mut(visitor, node);
+        visitor.visit_reference_or_schema_mut(node);
     }
     for (_, node) in links {
-        visit_reference_or_link_mut(visitor, node);
+        visitor.visit_reference_or_link_mut(node);
     }
     for (_, node) in callbacks {
-        visit_reference_or_callback_mut(visitor, node);
+        visitor.visit_reference_or_callback_mut(node);
     }
 }
 
@@ -316,7 +316,7 @@ pub fn visit_reference_or_callback_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_callback_mut(visitor, node);
+        visitor.visit_callback_mut(node);
     }
 }
 
@@ -325,7 +325,7 @@ where
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     for (_, node) in node {
-        visit_path_item_mut(visitor, node);
+        visitor.visit_path_item_mut(node);
     }
 }
 
@@ -336,7 +336,7 @@ pub fn visit_reference_or_security_scheme_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_security_scheme_mut(visitor, node);
+        visitor.visit_security_scheme_mut(node);
     }
 }
 
@@ -351,7 +351,7 @@ pub fn visit_security_scheme_mut<'openapi, VisitorT>(
             location,
             name: _,
             description: _,
-        } => visit_api_key_location_mut(visitor, location),
+        } => visitor.visit_api_key_location_mut(location),
         SecurityScheme::HTTP {
             scheme: _,
             bearer_format: _,
@@ -360,7 +360,7 @@ pub fn visit_security_scheme_mut<'openapi, VisitorT>(
         SecurityScheme::OAuth2 {
             flows,
             description: _,
-        } => visit_oauth2_flows_mut(visitor, flows),
+        } => visitor.visit_oauth2_flows_mut(flows),
         SecurityScheme::OpenIDConnect {
             open_id_connect_url: _,
             description: _,
@@ -381,16 +381,16 @@ pub fn visit_oauth2_flows_mut<'openapi, VisitorT>(
         authorization_code,
     } = node;
     if let Some(node) = implicit.as_mut() {
-        visit_oauth2_flow_mut(visitor, node);
+        visitor.visit_oauth2_flow_mut(node);
     }
     if let Some(node) = password.as_mut() {
-        visit_oauth2_flow_mut(visitor, node);
+        visitor.visit_oauth2_flow_mut(node);
     }
     if let Some(node) = client_credentials.as_mut() {
-        visit_oauth2_flow_mut(visitor, node);
+        visitor.visit_oauth2_flow_mut(node);
     }
     if let Some(node) = authorization_code.as_mut() {
-        visit_oauth2_flow_mut(visitor, node);
+        visitor.visit_oauth2_flow_mut(node);
     }
 }
 
@@ -421,7 +421,7 @@ where
         extensions: _,
     } = node;
     for (_, node) in paths {
-        visit_reference_or_path_item_mut(visitor, node);
+        visitor.visit_reference_or_path_item_mut(node);
     }
 }
 
@@ -432,7 +432,7 @@ pub fn visit_reference_or_path_item_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_path_item_mut(visitor, node);
+        visitor.visit_path_item_mut(node);
     }
 }
 
@@ -456,34 +456,34 @@ where
         extensions: _,
     } = node;
     if let Some(node) = get.as_mut() {
-        visit_operation_mut(visitor, node);
+        visitor.visit_operation_mut(node);
     }
     if let Some(node) = put.as_mut() {
-        visit_operation_mut(visitor, node);
+        visitor.visit_operation_mut(node);
     }
     if let Some(node) = post.as_mut() {
-        visit_operation_mut(visitor, node);
+        visitor.visit_operation_mut(node);
     }
     if let Some(node) = delete.as_mut() {
-        visit_operation_mut(visitor, node);
+        visitor.visit_operation_mut(node);
     }
     if let Some(node) = options.as_mut() {
-        visit_operation_mut(visitor, node);
+        visitor.visit_operation_mut(node);
     }
     if let Some(node) = head.as_mut() {
-        visit_operation_mut(visitor, node);
+        visitor.visit_operation_mut(node);
     }
     if let Some(node) = patch.as_mut() {
-        visit_operation_mut(visitor, node);
+        visitor.visit_operation_mut(node);
     }
     if let Some(node) = trace.as_mut() {
-        visit_operation_mut(visitor, node);
+        visitor.visit_operation_mut(node);
     }
     for node in servers {
-        visit_server_mut(visitor, node);
+        visitor.visit_server_mut(node);
     }
     for node in parameters {
-        visit_reference_or_parameter_mut(visitor, node);
+        visitor.visit_reference_or_parameter_mut(node);
     }
 }
 
@@ -508,17 +508,17 @@ pub fn visit_operation_mut<'openapi, VisitorT>(
         extensions: _,
     } = node;
     if let Some(node) = external_docs.as_mut() {
-        visit_external_documentation_mut(visitor, node);
+        visitor.visit_external_documentation_mut(node);
     }
     for node in parameters {
-        visit_reference_or_parameter_mut(visitor, node);
+        visitor.visit_reference_or_parameter_mut(node);
     }
     if let Some(node) = request_body.as_mut() {
-        visit_reference_or_request_body_mut(visitor, node);
+        visitor.visit_reference_or_request_body_mut(node);
     }
-    visit_responses_mut(visitor, responses);
+    visitor.visit_responses_mut(responses);
     for node in servers {
-        visit_server_mut(visitor, node);
+        visitor.visit_server_mut(node);
     }
 }
 
@@ -534,10 +534,10 @@ pub fn visit_responses_mut<'openapi, VisitorT>(
         extensions: _,
     } = node;
     if let Some(node) = default.as_mut() {
-        visit_reference_or_response_mut(visitor, node);
+        visitor.visit_reference_or_response_mut(node);
     }
     for (_, node) in responses {
-        visit_reference_or_response_mut(visitor, node)
+        visitor.visit_reference_or_response_mut(node)
     }
 }
 
@@ -548,7 +548,7 @@ pub fn visit_reference_or_response_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_response_mut(visitor, node);
+        visitor.visit_response_mut(node);
     }
 }
 pub fn visit_response_mut<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi mut Response)
@@ -563,13 +563,13 @@ where
         extensions: _,
     } = node;
     for (_, node) in headers {
-        visit_reference_or_header_mut(visitor, node);
+        visitor.visit_reference_or_header_mut(node);
     }
     for (_, node) in content {
-        visit_media_type_mut(visitor, node);
+        visitor.visit_media_type_mut(node);
     }
     for (_, node) in links {
-        visit_reference_or_link_mut(visitor, node);
+        visitor.visit_reference_or_link_mut(node);
     }
 }
 
@@ -580,7 +580,7 @@ pub fn visit_reference_or_link_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_link_mut(visitor, node);
+        visitor.visit_link_mut(node);
     }
 }
 
@@ -596,9 +596,9 @@ where
         server,
         extensions: _,
     } = node;
-    visit_link_operation_mut(visitor, operation);
+    visitor.visit_link_operation_mut(operation);
     if let Some(node) = server.as_mut() {
-        visit_server_mut(visitor, node);
+        visitor.visit_server_mut(node);
     }
 }
 
@@ -618,7 +618,7 @@ pub fn visit_reference_or_request_body_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_request_body_mut(visitor, node);
+        visitor.visit_request_body_mut(node);
     }
 }
 
@@ -635,7 +635,7 @@ pub fn visit_request_body_mut<'openapi, VisitorT>(
         extensions: _,
     } = node;
     for (_, node) in content {
-        visit_media_type_mut(visitor, node);
+        visitor.visit_media_type_mut(node);
     }
 }
 
@@ -646,7 +646,7 @@ pub fn visit_reference_or_parameter_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_parameter_mut(visitor, node);
+        visitor.visit_parameter_mut(node);
     }
 }
 pub fn visit_parameter_mut<'openapi, VisitorT>(
@@ -662,29 +662,29 @@ pub fn visit_parameter_mut<'openapi, VisitorT>(
             style,
             allow_empty_value: _,
         } => {
-            visit_parameter_data_mut(visitor, parameter_data);
-            visit_query_style_mut(visitor, style);
+            visitor.visit_parameter_data_mut(parameter_data);
+            visitor.visit_query_style_mut(style);
         }
         Parameter::Header {
             parameter_data,
             style,
         } => {
-            visit_parameter_data_mut(visitor, parameter_data);
-            visit_header_style_mut(visitor, style);
+            visitor.visit_parameter_data_mut(parameter_data);
+            visitor.visit_header_style_mut(style);
         }
         Parameter::Path {
             parameter_data,
             style,
         } => {
-            visit_parameter_data_mut(visitor, parameter_data);
-            visit_path_style_mut(visitor, style);
+            visitor.visit_parameter_data_mut(parameter_data);
+            visitor.visit_path_style_mut(style);
         }
         Parameter::Cookie {
             parameter_data,
             style,
         } => {
-            visit_parameter_data_mut(visitor, parameter_data);
-            visit_cookie_style_mut(visitor, style);
+            visitor.visit_parameter_data_mut(parameter_data);
+            visitor.visit_cookie_style_mut(style);
         }
     }
 }
@@ -724,9 +724,9 @@ pub fn visit_parameter_data_mut<'openapi, VisitorT>(
         explode: _,
         extensions: _,
     } = node;
-    visit_parameter_schema_or_content_mut(visitor, format);
+    visitor.visit_parameter_schema_or_content_mut(format);
     for (_, node) in examples {
-        visit_reference_or_example_mut(visitor, node);
+        visitor.visit_reference_or_example_mut(node);
     }
 }
 
@@ -737,10 +737,10 @@ pub fn visit_parameter_schema_or_content_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     match node {
-        ParameterSchemaOrContent::Schema(node) => visit_reference_or_schema_mut(visitor, node),
+        ParameterSchemaOrContent::Schema(node) => visitor.visit_reference_or_schema_mut(node),
         ParameterSchemaOrContent::Content(node) => {
             for (_, node) in node {
-                visit_media_type_mut(visitor, node);
+                visitor.visit_media_type_mut(node);
             }
         }
     }
@@ -760,13 +760,13 @@ pub fn visit_media_type_mut<'openapi, VisitorT>(
         extensions: _,
     } = node;
     if let Some(node) = schema.as_mut() {
-        visit_reference_or_schema_mut(visitor, node);
+        visitor.visit_reference_or_schema_mut(node);
     }
     for (_, node) in examples {
-        visit_reference_or_example_mut(visitor, node);
+        visitor.visit_reference_or_example_mut(node);
     }
     for (_, node) in encoding {
-        visit_encoding_mut(visitor, node);
+        visitor.visit_encoding_mut(node);
     }
 }
 
@@ -783,10 +783,10 @@ where
         extensions: _,
     } = node;
     for (_, node) in headers {
-        visit_reference_or_header_mut(visitor, node);
+        visitor.visit_reference_or_header_mut(node);
     }
     if let Some(node) = style.as_mut() {
-        visit_query_style_mut(visitor, node);
+        visitor.visit_query_style_mut(node);
     }
 }
 
@@ -806,7 +806,7 @@ pub fn visit_reference_or_header_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_header_mut(visitor, node);
+        visitor.visit_header_mut(node);
     }
 }
 
@@ -824,10 +824,10 @@ where
         examples,
         extensions: _,
     } = node;
-    visit_header_style_mut(visitor, style);
-    visit_parameter_schema_or_content_mut(visitor, format);
+    visitor.visit_header_style_mut(style);
+    visitor.visit_parameter_schema_or_content_mut(format);
     for (_, node) in examples {
-        visit_reference_or_example_mut(visitor, node);
+        visitor.visit_reference_or_example_mut(node);
     }
 }
 
@@ -847,7 +847,7 @@ pub fn visit_reference_or_example_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_example_mut(visitor, node);
+        visitor.visit_example_mut(node);
     }
 }
 
@@ -865,7 +865,7 @@ pub fn visit_reference_or_schema_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_schema_mut(visitor, node);
+        visitor.visit_schema_mut(node);
     }
 }
 
@@ -877,8 +877,8 @@ where
         schema_data,
         schema_kind,
     } = node;
-    visit_schema_data_mut(visitor, schema_data);
-    visit_schema_kind_mut(visitor, schema_kind);
+    visitor.visit_schema_data_mut(schema_data);
+    visitor.visit_schema_kind_mut(schema_kind);
 }
 
 pub fn visit_schema_data_mut<'openapi, VisitorT>(
@@ -901,10 +901,10 @@ pub fn visit_schema_data_mut<'openapi, VisitorT>(
         extensions: _,
     } = node;
     if let Some(node) = external_docs.as_mut() {
-        visit_external_documentation_mut(visitor, node);
+        visitor.visit_external_documentation_mut(node);
     }
     if let Some(node) = discriminator.as_mut() {
-        visit_discriminator_mut(visitor, node);
+        visitor.visit_discriminator_mut(node);
     }
 }
 
@@ -924,24 +924,24 @@ pub fn visit_schema_kind_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     match node {
-        SchemaKind::Type(node) => visit_type_mut(visitor, node),
+        SchemaKind::Type(node) => visitor.visit_type_mut(node),
         SchemaKind::OneOf { one_of } => {
             for node in one_of {
-                visit_reference_or_schema_mut(visitor, node);
+                visitor.visit_reference_or_schema_mut(node);
             }
         }
         SchemaKind::AllOf { all_of } => {
             for node in all_of {
-                visit_reference_or_schema_mut(visitor, node);
+                visitor.visit_reference_or_schema_mut(node);
             }
         }
         SchemaKind::AnyOf { any_of } => {
             for node in any_of {
-                visit_reference_or_schema_mut(visitor, node);
+                visitor.visit_reference_or_schema_mut(node);
             }
         }
-        SchemaKind::Not { not } => visit_reference_or_schema_mut(visitor, not),
-        SchemaKind::Any(node) => visit_any_schema_mut(visitor, node),
+        SchemaKind::Not { not } => visitor.visit_reference_or_schema_mut(not),
+        SchemaKind::Any(node) => visitor.visit_any_schema_mut(node),
     }
 }
 
@@ -978,25 +978,25 @@ pub fn visit_any_schema_mut<'openapi, VisitorT>(
         not,
     } = node;
     for (_, node) in properties {
-        visit_reference_or_box_schema_mut(visitor, node);
+        visitor.visit_reference_or_box_schema_mut(node);
     }
     if let Some(node) = additional_properties.as_mut() {
-        visit_additional_properties_mut(visitor, node);
+        visitor.visit_additional_properties_mut(node);
     }
     if let Some(node) = items.as_mut() {
-        visit_reference_or_box_schema_mut(visitor, node);
+        visitor.visit_reference_or_box_schema_mut(node);
     }
     for node in one_of {
-        visit_reference_or_schema_mut(visitor, node);
+        visitor.visit_reference_or_schema_mut(node);
     }
     for node in all_of {
-        visit_reference_or_schema_mut(visitor, node);
+        visitor.visit_reference_or_schema_mut(node);
     }
     for node in any_of {
-        visit_reference_or_schema_mut(visitor, node);
+        visitor.visit_reference_or_schema_mut(node);
     }
     if let Some(node) = not.as_mut() {
-        visit_reference_or_schema_mut(visitor, node);
+        visitor.visit_reference_or_schema_mut(node);
     }
 }
 
@@ -1005,11 +1005,11 @@ where
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     match node {
-        Type::String(node) => visit_string_type_mut(visitor, node),
-        Type::Number(node) => visit_number_type_mut(visitor, node),
-        Type::Integer(node) => visit_integer_type_mut(visitor, node),
-        Type::Object(node) => visit_object_type_mut(visitor, node),
-        Type::Array(node) => visit_array_type_mut(visitor, node),
+        Type::String(node) => visitor.visit_string_type_mut(node),
+        Type::Number(node) => visitor.visit_number_type_mut(node),
+        Type::Integer(node) => visitor.visit_integer_type_mut(node),
+        Type::Object(node) => visitor.visit_object_type_mut(node),
+        Type::Array(node) => visitor.visit_array_type_mut(node),
         Type::Boolean {} => (),
     }
 }
@@ -1027,7 +1027,7 @@ pub fn visit_array_type_mut<'openapi, VisitorT>(
         unique_items: _,
     } = node;
     if let Some(node) = items.as_mut() {
-        visit_reference_or_box_schema_mut(visitor, node);
+        visitor.visit_reference_or_box_schema_mut(node);
     }
 }
 
@@ -1045,10 +1045,10 @@ pub fn visit_object_type_mut<'openapi, VisitorT>(
         max_properties: _,
     } = node;
     for (_, node) in properties {
-        visit_reference_or_box_schema_mut(visitor, node);
+        visitor.visit_reference_or_box_schema_mut(node);
     }
     if let Some(node) = additional_properties.as_mut() {
-        visit_additional_properties_mut(visitor, node);
+        visitor.visit_additional_properties_mut(node);
     }
 }
 
@@ -1059,7 +1059,7 @@ pub fn visit_reference_or_box_schema_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_schema_mut(visitor, node);
+        visitor.visit_schema_mut(node);
     }
 }
 
@@ -1071,7 +1071,7 @@ pub fn visit_additional_properties_mut<'openapi, VisitorT>(
 {
     match node {
         AdditionalProperties::Any(_) => (),
-        AdditionalProperties::Schema(node) => visit_reference_or_schema_mut(visitor, node),
+        AdditionalProperties::Schema(node) => visitor.visit_reference_or_schema_mut(node),
     }
 }
 
@@ -1090,7 +1090,7 @@ pub fn visit_integer_type_mut<'openapi, VisitorT>(
         maximum: _,
         enumeration: _,
     } = node;
-    visit_variant_or_unknown_or_empty_integer_format_mut(visitor, format);
+    visitor.visit_variant_or_unknown_or_empty_integer_format_mut(format);
 }
 
 pub fn visit_variant_or_unknown_or_empty_integer_format_mut<'openapi, VisitorT>(
@@ -1100,7 +1100,7 @@ pub fn visit_variant_or_unknown_or_empty_integer_format_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     match node {
-        VariantOrUnknownOrEmpty::Item(node) => visit_integer_format_mut(visitor, node),
+        VariantOrUnknownOrEmpty::Item(node) => visitor.visit_integer_format_mut(node),
         VariantOrUnknownOrEmpty::Unknown(_) => (),
         VariantOrUnknownOrEmpty::Empty => (),
     }
@@ -1130,7 +1130,7 @@ pub fn visit_number_type_mut<'openapi, VisitorT>(
         maximum: _,
         enumeration: _,
     } = node;
-    visit_variant_or_unknown_or_empty_number_format_mut(visitor, format);
+    visitor.visit_variant_or_unknown_or_empty_number_format_mut(format);
 }
 
 pub fn visit_variant_or_unknown_or_empty_number_format_mut<'openapi, VisitorT>(
@@ -1140,7 +1140,7 @@ pub fn visit_variant_or_unknown_or_empty_number_format_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     match node {
-        VariantOrUnknownOrEmpty::Item(node) => visit_number_format_mut(visitor, node),
+        VariantOrUnknownOrEmpty::Item(node) => visitor.visit_number_format_mut(node),
         VariantOrUnknownOrEmpty::Unknown(_) => (),
         VariantOrUnknownOrEmpty::Empty => (),
     }
@@ -1168,7 +1168,7 @@ pub fn visit_string_type_mut<'openapi, VisitorT>(
         min_length: _,
         max_length: _,
     } = node;
-    visit_variant_or_unknown_or_empty_string_format_mut(visitor, format);
+    visitor.visit_variant_or_unknown_or_empty_string_format_mut(format);
 }
 
 pub fn visit_variant_or_unknown_or_empty_string_format_mut<'openapi, VisitorT>(
@@ -1178,7 +1178,7 @@ pub fn visit_variant_or_unknown_or_empty_string_format_mut<'openapi, VisitorT>(
     VisitorT: VisitMut<'openapi> + ?Sized,
 {
     match node {
-        VariantOrUnknownOrEmpty::Item(node) => visit_string_format_mut(visitor, node),
+        VariantOrUnknownOrEmpty::Item(node) => visitor.visit_string_format_mut(node),
         VariantOrUnknownOrEmpty::Unknown(_) => (),
         VariantOrUnknownOrEmpty::Empty => (),
     }
@@ -1214,7 +1214,7 @@ where
     } = node;
     if let Some(node) = variables.as_mut() {
         for (_, node) in node {
-            visit_server_variable_mut(visitor, node);
+            visitor.visit_server_variable_mut(node);
         }
     }
 }
@@ -1242,10 +1242,10 @@ where
         extensions: _,
     } = node;
     if let Some(node) = contact.as_mut() {
-        visit_contact_mut(visitor, node)
+        visitor.visit_contact_mut(node)
     }
     if let Some(node) = license.as_mut() {
-        visit_license_mut(visitor, node);
+        visitor.visit_license_mut(node);
     }
 }
 

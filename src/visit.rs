@@ -222,19 +222,19 @@ where
         external_docs,
         extensions: _,
     } = node;
-    visit_info(visitor, info);
+    visitor.visit_info(info);
     for node in servers {
-        visit_server(visitor, node);
+        visitor.visit_server(node);
     }
-    visit_paths(visitor, paths);
+    visitor.visit_paths(paths);
     if let Some(node) = components.as_ref() {
-        visit_components(visitor, node);
+        visitor.visit_components(node);
     }
     for node in tags {
-        visit_tag(visitor, node);
+        visitor.visit_tag(node);
     }
     if let Some(node) = external_docs.as_ref() {
-        visit_external_documentation(visitor, node);
+        visitor.visit_external_documentation(node);
     }
 }
 
@@ -249,7 +249,7 @@ where
         extensions: _,
     } = node;
     if let Some(node) = external_docs.as_ref() {
-        visit_external_documentation(visitor, node);
+        visitor.visit_external_documentation(node);
     }
 }
 
@@ -270,31 +270,31 @@ where
         extensions: _,
     } = node;
     for (_, node) in security_schemes {
-        visit_reference_or_security_scheme(visitor, node);
+        visitor.visit_reference_or_security_scheme(node);
     }
     for (_, node) in responses {
-        visit_reference_or_response(visitor, node);
+        visitor.visit_reference_or_response(node);
     }
     for (_, node) in parameters {
-        visit_reference_or_parameter(visitor, node);
+        visitor.visit_reference_or_parameter(node);
     }
     for (_, node) in examples {
-        visit_reference_or_example(visitor, node);
+        visitor.visit_reference_or_example(node);
     }
     for (_, node) in request_bodies {
-        visit_reference_or_request_body(visitor, node);
+        visitor.visit_reference_or_request_body(node);
     }
     for (_, node) in headers {
-        visit_reference_or_header(visitor, node);
+        visitor.visit_reference_or_header(node);
     }
     for (_, node) in schemas {
-        visit_reference_or_schema(visitor, node);
+        visitor.visit_reference_or_schema(node);
     }
     for (_, node) in links {
-        visit_reference_or_link(visitor, node);
+        visitor.visit_reference_or_link(node);
     }
     for (_, node) in callbacks {
-        visit_reference_or_callback(visitor, node);
+        visitor.visit_reference_or_callback(node);
     }
 }
 
@@ -305,7 +305,7 @@ pub fn visit_reference_or_callback<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_callback(visitor, node);
+        visitor.visit_callback(node);
     }
 }
 
@@ -314,7 +314,7 @@ where
     VisitorT: Visit<'openapi> + ?Sized,
 {
     for (_, node) in node {
-        visit_path_item(visitor, node);
+        visitor.visit_path_item(node);
     }
 }
 
@@ -325,7 +325,7 @@ pub fn visit_reference_or_security_scheme<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_security_scheme(visitor, node);
+        visitor.visit_security_scheme(node);
     }
 }
 
@@ -340,7 +340,7 @@ pub fn visit_security_scheme<'openapi, VisitorT>(
             location,
             name: _,
             description: _,
-        } => visit_api_key_location(visitor, location),
+        } => visitor.visit_api_key_location(location),
         SecurityScheme::HTTP {
             scheme: _,
             bearer_format: _,
@@ -349,7 +349,7 @@ pub fn visit_security_scheme<'openapi, VisitorT>(
         SecurityScheme::OAuth2 {
             flows,
             description: _,
-        } => visit_oauth2_flows(visitor, flows),
+        } => visitor.visit_oauth2_flows(flows),
         SecurityScheme::OpenIDConnect {
             open_id_connect_url: _,
             description: _,
@@ -368,16 +368,16 @@ where
         authorization_code,
     } = node;
     if let Some(node) = implicit.as_ref() {
-        visit_oauth2_flow(visitor, node);
+        visitor.visit_oauth2_flow(node);
     }
     if let Some(node) = password.as_ref() {
-        visit_oauth2_flow(visitor, node);
+        visitor.visit_oauth2_flow(node);
     }
     if let Some(node) = client_credentials.as_ref() {
-        visit_oauth2_flow(visitor, node);
+        visitor.visit_oauth2_flow(node);
     }
     if let Some(node) = authorization_code.as_ref() {
-        visit_oauth2_flow(visitor, node);
+        visitor.visit_oauth2_flow(node);
     }
 }
 
@@ -406,7 +406,7 @@ where
         extensions: _,
     } = node;
     for (_, node) in paths {
-        visit_reference_or_path_item(visitor, node);
+        visitor.visit_reference_or_path_item(node);
     }
 }
 
@@ -417,7 +417,7 @@ pub fn visit_reference_or_path_item<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_path_item(visitor, node);
+        visitor.visit_path_item(node);
     }
 }
 
@@ -441,34 +441,34 @@ where
         extensions: _,
     } = node;
     if let Some(node) = get.as_ref() {
-        visit_operation(visitor, node);
+        visitor.visit_operation(node);
     }
     if let Some(node) = put.as_ref() {
-        visit_operation(visitor, node);
+        visitor.visit_operation(node);
     }
     if let Some(node) = post.as_ref() {
-        visit_operation(visitor, node);
+        visitor.visit_operation(node);
     }
     if let Some(node) = delete.as_ref() {
-        visit_operation(visitor, node);
+        visitor.visit_operation(node);
     }
     if let Some(node) = options.as_ref() {
-        visit_operation(visitor, node);
+        visitor.visit_operation(node);
     }
     if let Some(node) = head.as_ref() {
-        visit_operation(visitor, node);
+        visitor.visit_operation(node);
     }
     if let Some(node) = patch.as_ref() {
-        visit_operation(visitor, node);
+        visitor.visit_operation(node);
     }
     if let Some(node) = trace.as_ref() {
-        visit_operation(visitor, node);
+        visitor.visit_operation(node);
     }
     for node in servers {
-        visit_server(visitor, node);
+        visitor.visit_server(node);
     }
     for node in parameters {
-        visit_reference_or_parameter(visitor, node);
+        visitor.visit_reference_or_parameter(node);
     }
 }
 
@@ -491,17 +491,17 @@ where
         extensions: _,
     } = node;
     if let Some(node) = external_docs.as_ref() {
-        visit_external_documentation(visitor, node);
+        visitor.visit_external_documentation(node);
     }
     for node in parameters {
-        visit_reference_or_parameter(visitor, node);
+        visitor.visit_reference_or_parameter(node);
     }
     if let Some(node) = request_body.as_ref() {
-        visit_reference_or_request_body(visitor, node);
+        visitor.visit_reference_or_request_body(node);
     }
-    visit_responses(visitor, responses);
+    visitor.visit_responses(responses);
     for node in servers {
-        visit_server(visitor, node);
+        visitor.visit_server(node);
     }
 }
 
@@ -515,10 +515,10 @@ where
         extensions: _,
     } = node;
     if let Some(node) = default.as_ref() {
-        visit_reference_or_response(visitor, node);
+        visitor.visit_reference_or_response(node);
     }
     for (_, node) in responses {
-        visit_reference_or_response(visitor, node)
+        visitor.visit_reference_or_response(node)
     }
 }
 
@@ -529,7 +529,7 @@ pub fn visit_reference_or_response<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_response(visitor, node);
+        visitor.visit_response(node);
     }
 }
 pub fn visit_response<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi Response)
@@ -544,13 +544,13 @@ where
         extensions: _,
     } = node;
     for (_, node) in headers {
-        visit_reference_or_header(visitor, node);
+        visitor.visit_reference_or_header(node);
     }
     for (_, node) in content {
-        visit_media_type(visitor, node);
+        visitor.visit_media_type(node);
     }
     for (_, node) in links {
-        visit_reference_or_link(visitor, node);
+        visitor.visit_reference_or_link(node);
     }
 }
 
@@ -561,7 +561,7 @@ pub fn visit_reference_or_link<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_link(visitor, node);
+        visitor.visit_link(node);
     }
 }
 
@@ -577,9 +577,9 @@ where
         server,
         extensions: _,
     } = node;
-    visit_link_operation(visitor, operation);
+    visitor.visit_link_operation(operation);
     if let Some(node) = server.as_ref() {
-        visit_server(visitor, node);
+        visitor.visit_server(node);
     }
 }
 
@@ -599,7 +599,7 @@ pub fn visit_reference_or_request_body<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_request_body(visitor, node);
+        visitor.visit_request_body(node);
     }
 }
 
@@ -614,7 +614,7 @@ where
         extensions: _,
     } = node;
     for (_, node) in content {
-        visit_media_type(visitor, node);
+        visitor.visit_media_type(node);
     }
 }
 
@@ -625,7 +625,7 @@ pub fn visit_reference_or_parameter<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_parameter(visitor, node);
+        visitor.visit_parameter(node);
     }
 }
 pub fn visit_parameter<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi Parameter)
@@ -639,29 +639,29 @@ where
             style,
             allow_empty_value: _,
         } => {
-            visit_parameter_data(visitor, parameter_data);
-            visit_query_style(visitor, style);
+            visitor.visit_parameter_data(parameter_data);
+            visitor.visit_query_style(style);
         }
         Parameter::Header {
             parameter_data,
             style,
         } => {
-            visit_parameter_data(visitor, parameter_data);
-            visit_header_style(visitor, style);
+            visitor.visit_parameter_data(parameter_data);
+            visitor.visit_header_style(style);
         }
         Parameter::Path {
             parameter_data,
             style,
         } => {
-            visit_parameter_data(visitor, parameter_data);
-            visit_path_style(visitor, style);
+            visitor.visit_parameter_data(parameter_data);
+            visitor.visit_path_style(style);
         }
         Parameter::Cookie {
             parameter_data,
             style,
         } => {
-            visit_parameter_data(visitor, parameter_data);
-            visit_cookie_style(visitor, style);
+            visitor.visit_parameter_data(parameter_data);
+            visitor.visit_cookie_style(style);
         }
     }
 }
@@ -697,9 +697,9 @@ pub fn visit_parameter_data<'openapi, VisitorT>(
         explode: _,
         extensions: _,
     } = node;
-    visit_parameter_schema_or_content(visitor, format);
+    visitor.visit_parameter_schema_or_content(format);
     for (_, node) in examples {
-        visit_reference_or_example(visitor, node);
+        visitor.visit_reference_or_example(node);
     }
 }
 
@@ -710,10 +710,10 @@ pub fn visit_parameter_schema_or_content<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     match node {
-        ParameterSchemaOrContent::Schema(node) => visit_reference_or_schema(visitor, node),
+        ParameterSchemaOrContent::Schema(node) => visitor.visit_reference_or_schema(node),
         ParameterSchemaOrContent::Content(node) => {
             for (_, node) in node {
-                visit_media_type(visitor, node);
+                visitor.visit_media_type(node);
             }
         }
     }
@@ -731,13 +731,13 @@ where
         extensions: _,
     } = node;
     if let Some(node) = schema.as_ref() {
-        visit_reference_or_schema(visitor, node);
+        visitor.visit_reference_or_schema(node);
     }
     for (_, node) in examples {
-        visit_reference_or_example(visitor, node);
+        visitor.visit_reference_or_example(node);
     }
     for (_, node) in encoding {
-        visit_encoding(visitor, node);
+        visitor.visit_encoding(node);
     }
 }
 
@@ -754,10 +754,10 @@ where
         extensions: _,
     } = node;
     for (_, node) in headers {
-        visit_reference_or_header(visitor, node);
+        visitor.visit_reference_or_header(node);
     }
     if let Some(node) = style.as_ref() {
-        visit_query_style(visitor, node);
+        visitor.visit_query_style(node);
     }
 }
 
@@ -775,7 +775,7 @@ pub fn visit_reference_or_header<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_header(visitor, node);
+        visitor.visit_header(node);
     }
 }
 
@@ -793,10 +793,10 @@ where
         examples,
         extensions: _,
     } = node;
-    visit_header_style(visitor, style);
-    visit_parameter_schema_or_content(visitor, format);
+    visitor.visit_header_style(style);
+    visitor.visit_parameter_schema_or_content(format);
     for (_, node) in examples {
-        visit_reference_or_example(visitor, node);
+        visitor.visit_reference_or_example(node);
     }
 }
 
@@ -814,7 +814,7 @@ pub fn visit_reference_or_example<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_example(visitor, node);
+        visitor.visit_example(node);
     }
 }
 
@@ -832,7 +832,7 @@ pub fn visit_reference_or_schema<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_schema(visitor, node);
+        visitor.visit_schema(node);
     }
 }
 
@@ -844,8 +844,8 @@ where
         schema_data,
         schema_kind,
     } = node;
-    visit_schema_data(visitor, schema_data);
-    visit_schema_kind(visitor, schema_kind);
+    visitor.visit_schema_data(schema_data);
+    visitor.visit_schema_kind(schema_kind);
 }
 
 pub fn visit_schema_data<'openapi, VisitorT>(visitor: &mut VisitorT, node: &'openapi SchemaData)
@@ -866,10 +866,10 @@ where
         extensions: _,
     } = node;
     if let Some(node) = external_docs.as_ref() {
-        visit_external_documentation(visitor, node);
+        visitor.visit_external_documentation(node);
     }
     if let Some(node) = discriminator.as_ref() {
-        visit_discriminator(visitor, node);
+        visitor.visit_discriminator(node);
     }
 }
 
@@ -887,24 +887,24 @@ where
     VisitorT: Visit<'openapi> + ?Sized,
 {
     match node {
-        SchemaKind::Type(node) => visit_type(visitor, node),
+        SchemaKind::Type(node) => visitor.visit_type(node),
         SchemaKind::OneOf { one_of } => {
             for node in one_of {
-                visit_reference_or_schema(visitor, node);
+                visitor.visit_reference_or_schema(node);
             }
         }
         SchemaKind::AllOf { all_of } => {
             for node in all_of {
-                visit_reference_or_schema(visitor, node);
+                visitor.visit_reference_or_schema(node);
             }
         }
         SchemaKind::AnyOf { any_of } => {
             for node in any_of {
-                visit_reference_or_schema(visitor, node);
+                visitor.visit_reference_or_schema(node);
             }
         }
-        SchemaKind::Not { not } => visit_reference_or_schema(visitor, not),
-        SchemaKind::Any(node) => visit_any_schema(visitor, node),
+        SchemaKind::Not { not } => visitor.visit_reference_or_schema(not),
+        SchemaKind::Any(node) => visitor.visit_any_schema(node),
     }
 }
 
@@ -939,25 +939,25 @@ where
         not,
     } = node;
     for (_, node) in properties {
-        visit_reference_or_box_schema(visitor, node);
+        visitor.visit_reference_or_box_schema(node);
     }
     if let Some(node) = additional_properties.as_ref() {
-        visit_additional_properties(visitor, node);
+        visitor.visit_additional_properties(node);
     }
     if let Some(node) = items.as_ref() {
-        visit_reference_or_box_schema(visitor, node);
+        visitor.visit_reference_or_box_schema(node);
     }
     for node in one_of {
-        visit_reference_or_schema(visitor, node);
+        visitor.visit_reference_or_schema(node);
     }
     for node in all_of {
-        visit_reference_or_schema(visitor, node);
+        visitor.visit_reference_or_schema(node);
     }
     for node in any_of {
-        visit_reference_or_schema(visitor, node);
+        visitor.visit_reference_or_schema(node);
     }
     if let Some(node) = not.as_ref() {
-        visit_reference_or_schema(visitor, node);
+        visitor.visit_reference_or_schema(node);
     }
 }
 
@@ -966,11 +966,11 @@ where
     VisitorT: Visit<'openapi> + ?Sized,
 {
     match node {
-        Type::String(node) => visit_string_type(visitor, node),
-        Type::Number(node) => visit_number_type(visitor, node),
-        Type::Integer(node) => visit_integer_type(visitor, node),
-        Type::Object(node) => visit_object_type(visitor, node),
-        Type::Array(node) => visit_array_type(visitor, node),
+        Type::String(node) => visitor.visit_string_type(node),
+        Type::Number(node) => visitor.visit_number_type(node),
+        Type::Integer(node) => visitor.visit_integer_type(node),
+        Type::Object(node) => visitor.visit_object_type(node),
+        Type::Array(node) => visitor.visit_array_type(node),
         Type::Boolean {} => (),
     }
 }
@@ -986,7 +986,7 @@ where
         unique_items: _,
     } = node;
     if let Some(node) = items.as_ref() {
-        visit_reference_or_box_schema(visitor, node);
+        visitor.visit_reference_or_box_schema(node);
     }
 }
 
@@ -1002,10 +1002,10 @@ where
         max_properties: _,
     } = node;
     for (_, node) in properties {
-        visit_reference_or_box_schema(visitor, node);
+        visitor.visit_reference_or_box_schema(node);
     }
     if let Some(node) = additional_properties.as_ref() {
-        visit_additional_properties(visitor, node);
+        visitor.visit_additional_properties(node);
     }
 }
 
@@ -1016,7 +1016,7 @@ pub fn visit_reference_or_box_schema<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     if let Item(node) = node {
-        visit_schema(visitor, node);
+        visitor.visit_schema(node);
     }
 }
 
@@ -1028,7 +1028,7 @@ pub fn visit_additional_properties<'openapi, VisitorT>(
 {
     match node {
         AdditionalProperties::Any(_) => (),
-        AdditionalProperties::Schema(node) => visit_reference_or_schema(visitor, node),
+        AdditionalProperties::Schema(node) => visitor.visit_reference_or_schema(node),
     }
 }
 
@@ -1045,7 +1045,7 @@ where
         maximum: _,
         enumeration: _,
     } = node;
-    visit_variant_or_unknown_or_empty_integer_format(visitor, format);
+    visitor.visit_variant_or_unknown_or_empty_integer_format(format);
 }
 
 pub fn visit_variant_or_unknown_or_empty_integer_format<'openapi, VisitorT>(
@@ -1055,7 +1055,7 @@ pub fn visit_variant_or_unknown_or_empty_integer_format<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     match node {
-        VariantOrUnknownOrEmpty::Item(node) => visit_integer_format(visitor, node),
+        VariantOrUnknownOrEmpty::Item(node) => visitor.visit_integer_format(node),
         VariantOrUnknownOrEmpty::Unknown(_) => (),
         VariantOrUnknownOrEmpty::Empty => (),
     }
@@ -1083,7 +1083,7 @@ where
         maximum: _,
         enumeration: _,
     } = node;
-    visit_variant_or_unknown_or_empty_number_format(visitor, format);
+    visitor.visit_variant_or_unknown_or_empty_number_format(format);
 }
 
 pub fn visit_variant_or_unknown_or_empty_number_format<'openapi, VisitorT>(
@@ -1093,7 +1093,7 @@ pub fn visit_variant_or_unknown_or_empty_number_format<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     match node {
-        VariantOrUnknownOrEmpty::Item(node) => visit_number_format(visitor, node),
+        VariantOrUnknownOrEmpty::Item(node) => visitor.visit_number_format(node),
         VariantOrUnknownOrEmpty::Unknown(_) => (),
         VariantOrUnknownOrEmpty::Empty => (),
     }
@@ -1117,7 +1117,7 @@ where
         min_length: _,
         max_length: _,
     } = node;
-    visit_variant_or_unknown_or_empty_string_format(visitor, format);
+    visitor.visit_variant_or_unknown_or_empty_string_format(format);
 }
 
 pub fn visit_variant_or_unknown_or_empty_string_format<'openapi, VisitorT>(
@@ -1127,7 +1127,7 @@ pub fn visit_variant_or_unknown_or_empty_string_format<'openapi, VisitorT>(
     VisitorT: Visit<'openapi> + ?Sized,
 {
     match node {
-        VariantOrUnknownOrEmpty::Item(node) => visit_string_format(visitor, node),
+        VariantOrUnknownOrEmpty::Item(node) => visitor.visit_string_format(node),
         VariantOrUnknownOrEmpty::Unknown(_) => (),
         VariantOrUnknownOrEmpty::Empty => (),
     }
@@ -1161,7 +1161,7 @@ where
     } = node;
     if let Some(node) = variables.as_ref() {
         for (_, node) in node {
-            visit_server_variable(visitor, node);
+            visitor.visit_server_variable(node);
         }
     }
 }
@@ -1189,10 +1189,10 @@ where
         extensions: _,
     } = node;
     if let Some(node) = contact.as_ref() {
-        visit_contact(visitor, node)
+        visitor.visit_contact(node)
     }
     if let Some(node) = license.as_ref() {
-        visit_license(visitor, node);
+        visitor.visit_license(node);
     }
 }
 
